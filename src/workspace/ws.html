@@ -1,0 +1,301 @@
+<div class="ws">
+<!-- ===================== SELLER STUDIO (sellers + admin) ===================== -->
+<section class="view ws-view" data-view="studio" hidden>
+  <div class="view-head">
+    <div>
+      <h1 class="h1" data-i18n="studioTitle">Price it fairly, plan your week</h1>
+      <p class="lead" data-i18n="studioSub">A neural network trained right here in your browser suggests a fair selling price and forecasts weekly orders.</p>
+    </div>
+    <span class="pill" id="tfBackend">{{i:cpu}}<span>TensorFlow.js</span></span>
+  </div>
+
+  <div class="card mlhow-card">{{ml-how}}</div>
+
+  <div class="card">
+    <div class="calc">
+      <form class="stack" id="priceForm">
+        <div class="field">
+          <span class="label" data-i18n="fCategory">Product category</span>
+          <div class="cat-pick" id="catPick"></div>
+        </div>
+        <div class="slider-row">
+          <div class="top"><label class="label" for="inMat" data-i18n="fMaterial">Raw material cost (₹ per unit)</label><output id="outMat" class="num">₹120</output></div>
+          <input class="range" type="range" id="inMat" min="10" max="800" step="5" value="120">
+        </div>
+        <div class="slider-row">
+          <div class="top"><label class="label" for="inHrs" data-i18n="fHours">Preparation / labour hours</label><output id="outHrs" class="num">2 h</output></div>
+          <input class="range" type="range" id="inHrs" min="0.25" max="10" step="0.25" value="2">
+        </div>
+        <div class="field">
+          <span class="label" data-i18n="fPackaging">Packaging tier</span>
+          <div class="seg" id="pkgSeg">
+            <button type="button" data-v="0" aria-pressed="false" data-i18n="pkg0">Basic</button>
+            <button type="button" data-v="1" aria-pressed="true" data-i18n="pkg1">Standard pouch</button>
+            <button type="button" data-v="2" aria-pressed="false" data-i18n="pkg2">Premium gift box</button>
+          </div>
+        </div>
+        <div class="slider-row">
+          <div class="top"><label class="label" for="inSeason" data-i18n="fSeason">Local festival / seasonal demand</label><output id="outSeason" class="num">60%</output></div>
+          <input class="range" type="range" id="inSeason" min="0" max="100" step="1" value="60">
+          <div class="fest-chips" id="festChips"></div>
+        </div>
+      </form>
+
+      <div class="result" aria-live="polite">
+        <div class="stack-sm">
+          <span class="label" data-i18n="rPrice">Recommended fair selling price</span>
+          <div class="big-price num" id="rPrice">₹—</div>
+          <span class="small muted" id="rRange" data-i18n="rTraining">Model is training…</span>
+        </div>
+        <div class="kpis">
+          <div class="kpi"><b id="rMargin" class="num">—</b><span data-i18n="rMargin">Net profit margin</span></div>
+          <div class="kpi"><b id="rHourly" class="num">—</b><span data-i18n="rHourly">You earn per hour</span></div>
+          <div class="kpi"><b id="rOrders" class="num">—</b><span data-i18n="rOrders">Predicted orders / week</span></div>
+        </div>
+        <div class="warn-box" id="rWarn" hidden>{{i:alert}}<span id="rWarnText"></span></div>
+        <div class="stack-sm">
+          <div class="spread"><span class="h3" data-i18n="cmpTitle">Middleman vs SheSell direct (per month)</span><span class="small muted" id="cmpGain"></span></div>
+          <div class="cmp" id="cmp"></div>
+          <div class="slider-row">
+            <div class="top"><label class="small" for="inComm" data-i18n="fCommission">Middleman's cut (assumption)</label><output id="outComm" class="num small">40%</output></div>
+            <input class="range" type="range" id="inComm" min="10" max="60" step="1" value="40">
+          </div>
+        </div>
+        <div class="stack-sm">
+          <div class="row">
+            <a class="btn btn-wa" id="sharePrice" href="https://wa.me/910000000000" target="_blank" rel="noopener">{{i:wa}}<span data-i18n="sharePrice">Share price card on WhatsApp</span></a>
+            <button type="button" class="btn btn-ghost btn-sm" id="copyPrice">{{i:copy}}<span data-i18n="copyText">Copy text</span></button>
+          </div>
+          <p class="tiny muted wa-official" data-wa-hint></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-head">
+        <div><h2 class="h2" data-i18n="trainTitle">Live training: multi-layer perceptron</h2><p class="small muted" id="trainStatus" data-i18n="trainWait">Waiting for TensorFlow.js…</p></div>
+        <button type="button" class="btn btn-teal btn-sm" id="retrain" disabled>{{i:refresh}}<span data-i18n="retrain">Retrain model</span></button>
+      </div>
+      <div class="arch" id="arch"></div>
+      <div class="row small mt-3 mb-1 items-center">
+        <label for="inEpochs" data-i18n="epochs">Epochs</label>
+        <select class="input w-auto" id="inEpochs"><option>60</option><option selected>120</option><option>200</option><option>300</option></select>
+        <label for="inLr" data-i18n="lr">Learning rate</label>
+        <select class="input w-auto" id="inLr"><option>0.001</option><option>0.005</option><option selected>0.01</option><option>0.03</option></select>
+      </div>
+      <div class="chart-box"><canvas id="lossChart" role="img" aria-label="Training and validation loss by epoch" data-i18n-aria="lossAria"></canvas></div>
+      <div class="metrics mt-3.5" id="metrics"></div>
+      <p class="tiny muted mt-2.5" id="memLine"></p>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div><h2 class="h2" data-i18n="curveTitle">What the network learned</h2><p class="small muted" id="curveSub" data-i18n="curveSub">Predicted fair price as labour hours change, holding your other inputs fixed. The dot is your product.</p></div>
+      </div>
+      <div class="seg curve-seg" id="curveSeg" role="group" aria-label="Which output to inspect" data-i18n-aria="curveSegAria">
+        <button type="button" data-mode="price" aria-pressed="true">{{i:rupee}}<span data-i18n="curveModePrice">Fair price vs labour hours</span></button>
+        <button type="button" data-mode="orders" aria-pressed="false">{{i:package}}<span data-i18n="curveModeOrders">Weekly orders vs festival demand</span></button>
+      </div>
+      <div class="chart-box"><canvas id="curveChart" role="img" aria-label="Predicted price against labour hours" data-i18n-aria="curveAriaPrice"></canvas></div>
+      <p class="small mt-3" id="curveNote" data-i18n="curveNote">A straight line would mean a simple formula. The bend shows the MLP picked up interactions between category, packaging and festival demand from the data.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div><h2 class="h2" data-i18n="dataTitle">Training data</h2><p class="small muted" id="dataSub"></p></div>
+      <div class="row"><button type="button" class="btn btn-ghost btn-sm" id="copyCsv">{{i:copy}}<span data-i18n="copyCsv">Copy CSV</span></button><button type="button" class="btn btn-ghost btn-sm" id="toggleRows" data-i18n="showAll">Show all rows</button></div>
+    </div>
+    <div class="table-wrap scroll-y" id="dataTable"></div>
+    <p class="tiny muted mt-2.5" id="dataNote"></p>
+  </div>
+</section>
+
+<!-- ===================== AI CATALOGUE (sellers + admin) ===================== -->
+<section class="view ws-view" data-view="catalogue" hidden>
+  <div class="view-head">
+    <div>
+      <h1 class="h1" data-i18n="catTitle">Photo in, WhatsApp listing out</h1>
+      <p class="lead" data-i18n="catSub">A MobileNet image classifier runs in your browser to tag the product, score the photo and write a bilingual listing you can publish to the shop.</p>
+    </div>
+    <div class="stack-sm cnn-box">
+      <span class="pill" id="cnnStatus"><span class="status-dot" id="cnnDot"></span><span id="cnnText" data-i18n="cnnIdle">MobileNet not loaded</span></span>
+      <button type="button" class="btn btn-ghost btn-sm" id="cnnRetry" hidden>{{i:refresh}}<span data-i18n="cnnRetry">Try loading MobileNet again</span></button>
+    </div>
+  </div>
+
+  <div class="cat-grid">
+    <div class="card stack">
+      <div class="drop" id="drop">
+        <div class="hint" id="dropHint">
+          {{i:image}}
+          <b data-i18n="dropTitle">Drop a product photo here</b>
+          <span class="small muted" data-i18n="dropSub">JPG or PNG from your phone or computer. Nothing is uploaded until you publish; the model runs on this device.</span>
+          <label class="btn btn-primary">{{i:upload}}<span data-i18n="choosePhoto">Choose photo</span><input type="file" id="file" accept="image/*" class="sr-only"></label>
+        </div>
+        <canvas id="cvPreview" hidden></canvas>
+      </div>
+      <div class="stack-sm">
+        <span class="label" data-i18n="samplesTitle">Or try a sample photo</span>
+        <div class="samples" id="samples"></div>
+        <p class="tiny muted" data-i18n="samplesNote">Sample photos are generated in code for this demo.</p>
+      </div>
+      <div class="row">
+        <button type="button" class="btn btn-ghost btn-sm" id="changePhoto" hidden>{{i:upload}}<span data-i18n="changePhoto">Use another photo</span></button>
+      </div>
+    </div>
+
+    <div class="card stack" aria-live="polite">
+      <div>
+        <h2 class="h2" data-i18n="predTitle">What the CNN sees</h2>
+        <p class="small muted" data-i18n="predSub">Top-3 ImageNet classes with confidence.</p>
+      </div>
+      <div class="stack-sm" id="preds"><p class="small muted" data-i18n="predEmpty">Pick a photo to start.</p></div>
+      <div>
+        <h3 class="h3" data-i18n="mapTitle">Mapped to a SheSell category</h3>
+        <p class="tiny muted" data-i18n="mapSub">Probability mass of the top-10 classes, grouped by keyword rules.</p>
+      </div>
+      <div class="stack-sm" id="catMap"></div>
+      <div class="row"><label class="small" for="catOverride" data-i18n="override">Correct it:</label><select class="input w-auto" id="catOverride"></select></div>
+      <div>
+        <h3 class="h3" data-i18n="readyTitle">Catalogue readiness score</h3>
+        <p class="tiny muted" data-i18n="readySub">Weighted mix of six photo checks. Each one is shown below.</p>
+      </div>
+      <div class="score-wrap">
+        <svg class="dial" id="dial" viewBox="0 0 120 120" role="img" aria-label="Readiness score"></svg>
+        <div class="subscores" id="subscores"></div>
+      </div>
+      <ul class="tips" id="tips"></ul>
+    </div>
+  </div>
+
+  <div class="card" id="listingCard">
+    <div class="card-head">
+      <div><h2 class="h2" data-i18n="listTitle">Your WhatsApp catalogue listing</h2><p class="small muted" data-i18n="listSub">Edit anything, then publish.</p></div>
+    </div>
+    <div class="bind-row" id="bindRow"></div>
+    <div class="fields">
+      <div class="field"><label class="label" for="lName" data-i18n="lName">Product name (English)</label><input class="input" id="lName" maxlength="80"></div>
+      <div class="field"><label class="label" for="lNameMr" data-i18n="lNameMr">Product name (Marathi)</label><input class="input" id="lNameMr" lang="mr" maxlength="80"></div>
+      <div class="field"><label class="label" for="lLead" data-i18n="leadLabel">Availability / lead time</label><select class="input" id="lLead"></select></div>
+      <div class="field" data-custom-lead hidden><label class="label" for="lLeadText" data-i18n="leadTextEn">Your availability text (English)</label><input class="input" id="lLeadText" maxlength="60" placeholder="Fresh every Sunday" data-i18n-ph="leadTextPh"></div>
+      <div class="field" data-custom-lead hidden><label class="label" for="lLeadTextMr" data-i18n="leadTextMr">Your availability text (Marathi)</label><input class="input" id="lLeadTextMr" lang="mr" maxlength="60" placeholder="दर रविवारी ताजे" data-i18n-ph="leadTextPhMr"></div>
+    </div>
+    <div class="mlp-price">
+      <div class="mlp-head"><b class="h3">{{i:chart}}<span data-i18n="mlpTitle">Fair price from the Seller Studio MLP</span></b><span class="small muted" id="priceSrc"></span></div>
+      <div class="fields">
+        <div class="field"><label class="label" for="lMat" data-i18n="fMaterial">Raw material cost (₹ per unit)</label><input class="input num" id="lMat" type="number" min="1" max="100000" step="5" inputmode="numeric"></div>
+        <div class="field"><label class="label" for="lHrs" data-i18n="fHours">Preparation / labour hours</label><input class="input num" id="lHrs" type="number" min="0.25" max="200" step="0.25" inputmode="decimal"></div>
+        <div class="field"><label class="label" for="lTier" data-i18n="fPackaging">Packaging tier</label><select class="input" id="lTier"><option value="0" data-i18n="pkg0">Basic</option><option value="1" data-i18n="pkg1" selected>Standard pouch</option><option value="2" data-i18n="pkg2">Premium gift box</option></select></div>
+        <div class="field"><label class="label" for="lPrice" data-i18n="lPrice">Price (₹)</label><input class="input num" id="lPrice" type="number" min="5" step="5" inputmode="numeric"></div>
+      </div>
+      <div class="row"><button type="button" class="btn btn-ghost btn-sm" id="useMlp">{{i:cpu}}<span data-i18n="useMlp">Use the model’s price</span></button><span class="tiny muted" id="mlpRange"></span></div>
+    </div>
+    <div class="listing-grid mt-3.5">
+      <div class="field"><label class="label" for="lTextEn" data-i18n="lTextEn">Listing text, English</label><textarea class="input" id="lTextEn"></textarea></div>
+      <div class="field"><label class="label" for="lTextMr" data-i18n="lTextMr">Listing text, Marathi</label><textarea class="input" id="lTextMr" lang="mr"></textarea></div>
+    </div>
+    <div class="row mt-3.5">
+      <button type="button" class="btn btn-primary" id="publish" disabled>{{i:store}}<span data-i18n="publish">Publish to storefront</span></button>
+      <a class="btn btn-wa" id="shareListing" href="https://wa.me/910000000000" target="_blank" rel="noopener">{{i:wa}}<span data-i18n="shareWa">Send to SheSell on WhatsApp</span></a>
+      <button type="button" class="btn btn-ghost" id="copyListing">{{i:copy}}<span data-i18n="copyText">Copy text</span></button>
+    </div>
+    <p class="tiny muted wa-official mt-2.5" data-wa-hint></p>
+    <p class="pub-note" id="pubNote" role="status" hidden></p>
+  </div>
+</section>
+
+<!-- ===================== VOICE LESSONS (sellers + admin) ===================== -->
+<section class="view ws-view" data-view="lessons" hidden>
+  <div class="view-head">
+    <div>
+      <h1 class="h1" data-i18n="sahTitle">Learn by listening, grow together</h1>
+      <p class="lead" data-i18n="sahSub">Short Marathi voice lessons on catalogues, fair prices and UPI, with your local Saheli one message away.</p>
+    </div>
+  </div>
+
+  <div class="card stack">
+    <div class="spread">
+      <div class="stack-sm"><h2 class="h2" data-i18n="trainHub">Voice training hub</h2><p class="small muted" id="voiceInfo"></p></div>
+      <div class="row">
+        <label class="small" for="ttsRate" data-i18n="speed">Speed</label>
+        <select class="input w-auto" id="ttsRate"><option value="0.8">0.8×</option><option value="0.95" selected>1×</option><option value="1.15">1.2×</option></select>
+      </div>
+    </div>
+    <div class="modules" id="modules"></div>
+    <div class="lesson card tint-teal" id="lesson">
+      <div class="lesson-art"><img id="lessonImg" alt=""></div>
+      <div class="stack">
+        <div class="spread"><h3 class="h3" id="lessonTitle"></h3><div class="dots" id="dots" role="group" aria-label="Steps" data-i18n-aria="stepsAria"></div></div>
+        <p class="step-text" id="stepText" aria-live="polite"></p>
+        <div class="row">
+          <button type="button" class="btn btn-ghost btn-sm" id="prevStep" aria-label="Previous step" data-i18n-aria="prevStep">{{i:skipb}}</button>
+          <button type="button" class="btn btn-teal" id="speak">{{i:volume}}<span data-i18n="listen">Listen</span></button>
+          <button type="button" class="btn btn-ghost" id="playAll">{{i:play}}<span data-i18n="playAll">Play whole lesson</span></button>
+          <button type="button" class="btn btn-ghost btn-sm" id="nextStep" aria-label="Next step" data-i18n-aria="nextStep">{{i:skipf}}</button>
+          <button type="button" class="btn btn-primary btn-sm" id="markDone">{{i:check}}<span data-i18n="markDone">Mark lesson complete</span></button>
+        </div>
+        <p class="voice-note" id="voiceNote"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card stack">
+      <div><h2 class="h2" data-i18n="sahContact">Your local Saheli</h2><p class="small muted" data-i18n="sahContactSub">A trained community guide who helps you set up and sell.</p></div>
+      <div class="saheli-card"><img id="saheliImg" alt=""><div class="stack-sm"><b class="h3" data-i18n="sahName">Priya Kamble, SheSell Saheli</b><span class="small" data-i18n="sahWhen">Tuesday and Friday, 4–6 pm at the Gram Panchayat office</span><span class="small muted" data-i18n="sahHelps">Helps with: catalogue photos, pricing, UPI setup, delivery partners</span></div></div>
+      <a class="btn btn-wa" id="askSaheli" href="https://wa.me/910000000000" target="_blank" rel="noopener">{{i:wa}}<span data-i18n="askSaheli">Message your Saheli</span></a>
+      <p class="tiny muted wa-official" data-wa-hint></p>
+    </div>
+    <div class="card stack" id="practiceCard">
+      <div><h2 class="h2" data-i18n="practiceTitle">Put it into practice</h2><p class="small muted" data-i18n="practiceSub">Lesson 1 ends with sharing your catalogue link. Send yours now.</p></div>
+      <button type="button" class="btn btn-wa self-start" id="shareShop">{{i:wa}}<span data-i18n="shareShopBtn">Share My Shop / SHG Catalogue on WhatsApp</span></button>
+      <p class="tiny muted" data-i18n="practiceNote">The message has your shop’s own link, your products and prices, ready to forward.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PILOT IMPACT DASHBOARD (admin only) ===================== -->
+<section class="view ws-view" data-view="impact" hidden>
+  <div class="view-head">
+    <div>
+      <h1 class="h1" data-i18n="dashTitle">Impact dashboard and 3-month pilot</h1>
+      <p class="lead" data-i18n="dashSub">National context from our deck, the rural Pune pilot plan, and live numbers from this server.</p>
+    </div>
+    <span class="pill pill-lime self-start">{{i:flag}}<span data-i18n="pilotPill">Pilot: 20–30 women sellers, rural Pune, 3 months</span></span>
+  </div>
+
+  <div class="dash-band">
+    <div class="tiles">
+      <div class="tile"><b data-i18n="k1v">~73.3M</b><span data-i18n="k1">nano and micro-enterprises in India</span></div>
+      <div class="tile"><b data-i18n="k2v">~19.2M</b><span data-i18n="k2">women-owned businesses</span></div>
+      <div class="tile"><b data-i18n="k3v">10+ crore</b><span data-i18n="k3">women households mobilised into SHGs</span></div>
+      <div class="tile"><b data-i18n="k4v">23.3% → 40%</b><span data-i18n="k4">women's labour force participation, 2017–18 to 2025</span></div>
+    </div>
+    <p class="tiny muted" data-i18n="dashSrc">Figures as presented in the Team AI RANGERS deck (Market Opportunity and Expected Impact slides).</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-head"><div><h2 class="h2" data-i18n="lfprTitle">Women's labour force participation nearly doubled</h2><p class="small muted" data-i18n="lfprSub">Share of women in the labour force (%), from the deck.</p></div></div>
+      <div class="chart-box sm"><canvas id="lfprChart" role="img" aria-label="Women's LFPR 23.3% in 2017-18 and 40% in 2025" data-i18n-aria="lfprAria"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div><h2 class="h2" data-i18n="splitTitle">Catalogue mix vs pilot target</h2><p class="small muted" data-i18n="splitSub">Target is the deck's indicative 25% per category. The live mix updates as listings are approved.</p></div></div>
+      <div class="split" id="split"></div>
+      <div class="legend mt-2.5"><span><i style="background:#9EB83B"></i><span data-i18n="legLive">Live catalogue</span></span><span><i style="background:#8FB0B6"></i><span data-i18n="legTarget">Pilot target</span></span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div><h2 class="h2" data-i18n="liveTitle">How we will measure success, live</h2><p class="small muted" data-i18n="liveSub">The six pilot metrics from the deck, counted from this server’s orders, listings and visits.</p></div></div>
+    <div class="live-metrics" id="liveMetrics"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div><h2 class="h2" data-i18n="roadTitle">3-month pilot roadmap: rural Pune and neighbouring districts</h2><p class="small muted" data-i18n="roadSub">Sellers in Junnar, Mulshi, Maval, Bhor, Baramati and nearby; buyers in Pune city housing societies and taluka towns.</p></div></div>
+    <div class="roadmap" id="roadmap"></div>
+  </div>
+</section>
+</div>

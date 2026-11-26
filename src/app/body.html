@@ -1,0 +1,121 @@
+<body>
+<a class="skip" href="#main" data-i18n="skip">Skip to content</a>
+
+<header class="appbar">
+  <div class="appbar-in">
+    <a class="brand" href="./" aria-label="SheSell Local">
+      <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="12" fill="#9EB83B"/><path d="M11.5 15h17l-2.2 15.5H13.7z" fill="#1B434D"/><path d="M15.5 15c0-5.6 9-5.6 9 0" fill="none" stroke="#1B434D" stroke-width="2.6" stroke-linecap="round"/><path d="M20 27.5c0-4.4 3.2-6.8 6.8-6.8 0 3.9-2.8 6.8-6.8 6.8z" fill="#9EB83B"/><path d="M20 27.5l3.6-3.6" stroke="#1B434D" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <span><span class="brand-name">SheSell Local</span><span class="brand-tag" data-i18n="tagline">WhatsApp-first storefront for rural women entrepreneurs</span></span>
+    </a>
+    <div class="bar-actions">
+      <div class="lang" role="group" aria-label="Language / भाषा">
+        <button type="button" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang="mr" aria-pressed="false" lang="mr">मराठी</button>
+      </div>
+      <a class="login-link" id="loginLink" href="/admin">{{i:lock}}<span class="ll-long" id="loginLabel" data-i18n="sellerLogin">Seller / Admin Login</span><span class="ll-short" id="loginShort" data-i18n="sellerLoginShort">Login</span></a>
+      <button class="icon-btn" type="button" id="cartBtn" aria-label="Cart" data-i18n-aria="cart">{{i:cart}}<span class="badge" id="cartCount"></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <main id="main" tabindex="-1">
+    <div class="announce" id="announce" role="status" hidden></div>
+
+    <section class="view" id="view-shop" aria-labelledby="shopTitle">
+      <div class="shop-hero">
+        <div class="stack-sm">
+          <h1 class="h1" id="shopTitle" data-i18n="shopTitle">Shop local, straight from women makers</h1>
+          <p class="lead max-w-3xl" data-i18n="shopSub">Homemade food, tailoring, handicrafts and farm produce from women sellers and Self-Help Groups in rural Pune district.</p>
+          <ul class="values" aria-label="Why SheSell Local" data-i18n-aria="valuesAria">
+            <li>{{i:rupee}}<span data-i18n="valUpi">Direct UPI · Zero middlemen</span></li>
+            <li>{{i:truck}}<span data-i18n="valLocal">Local pickup or neighbourhood delivery</span></li>
+            <li>{{i:users}}<span data-i18n="valMakers">Made by women and SHGs in rural Pune</span></li>
+          </ul>
+          <p class="not-quick">{{i:clock}}<span data-i18n="valNotQuick">Not 10-minute delivery from a dark store.</span></p>
+          <p class="live-pill" id="livePill" hidden></p>
+        </div>
+        <label class="search">{{i:search}}<span class="sr-only" data-i18n="searchLabel">Search products</span>
+          <input class="input" type="search" id="q" autocomplete="off" placeholder="Search chakli, blouse, diya…" data-i18n-ph="searchPh">
+        </label>
+      </div>
+
+      <div class="seller-banner" id="sellerBanner" hidden></div>
+
+      <div class="filters" role="group" aria-label="Filters" data-i18n-aria="filtersAria">
+        <div class="grp" id="catChips"></div>
+        <div class="grp" id="sellerChips"></div>
+        <label class="sr-only" for="sort" data-i18n="sortLabel">Sort</label>
+        <select class="input" id="sort">
+          <option value="rec" data-i18n="sortRec">Sort: recommended</option>
+          <option value="low" data-i18n="sortLow">Price: low to high</option>
+          <option value="high" data-i18n="sortHigh">Price: high to low</option>
+          <option value="pop" data-i18n="sortPop">Most popular nearby</option>
+        </select>
+      </div>
+
+      <div class="card reco" aria-live="polite">
+        <div class="spread">
+          <div class="stack-sm">
+            <h2 class="h2" id="recoTitle" data-i18n="recoTitlePop">Popular near you</h2>
+            <p class="small muted" id="recoWhy" data-i18n="recoWhyPop">Open a product or add to cart, and the recommender personalises this row using cosine similarity.</p>
+          </div>
+          <span class="pill pill-lime self-start">{{i:cpu}}<span data-i18n="mlLive">Live ML</span></span>
+        </div>
+        <div class="reco-row" id="recoRow"></div>
+        {{ml-how}}
+      </div>
+
+      <div class="pgrid" id="grid"></div>
+
+      <div class="card" id="ordersCard" hidden>
+        <div class="card-head"><div><h2 class="h2" data-i18n="ordersTitle">Your orders</h2><p class="small muted" data-i18n="ordersSub">Updates also arrive as WhatsApp messages from the official SheSell number.</p></div></div>
+        <div class="stack" id="ordersList"></div>
+      </div>
+
+      <details class="card" id="modelInside">
+        <summary><span data-i18n="insideTitle">Inside the recommender: hybrid collaborative filtering</span>{{i:chev}}</summary>
+        <div class="stack mt-3.5">
+          <p class="small" data-i18n="insideP1">Item-based collaborative filtering compares the purchase columns of two products across past baskets.</p>
+          <div class="formula" lang="en">cos(A,B) = (A · B) / (‖A‖ ‖B‖) &nbsp;&nbsp; score = α·cos<sub>CF</sub> + (1 − α)·cos<sub>content</sub>, &nbsp; α = 0.65 × min(1, n<sub>min</sub>/6)</div>
+          <div class="row small"><span class="pill" id="statBaskets">260 baskets</span><span class="pill" id="statItems">20 products</span><span class="pill" data-i18n="statDims">10-dimension attribute vectors</span></div>
+          <div class="heat-wrap"><div class="heat" id="heat"></div></div>
+          <p class="tiny muted" data-i18n="heatNote">Hybrid similarity between every pair of products. Darker = more likely to be bought together. Hover a cell for the pair.</p>
+        </div>
+      </details>
+    </section>
+  </main>
+
+  <aside class="phone-col" id="phoneCol" aria-labelledby="waPreviewTitle">
+    <div class="wa-label">
+      <span class="wa-badge">{{i:wa}}</span>
+      <span class="stack-sm"><b id="waPreviewTitle" data-i18n="waPreviewTitle">WhatsApp Flow Preview</b><span data-i18n="waPreviewSub">Simulated — Cloud API Phase 2</span></span>
+    </div>
+    <div class="phone">
+      <div class="screen">
+        <div class="sbar"><span id="clock">9:41</span><span class="icons">{{i:signal}}{{i:wifi}}{{i:battery}}</span></div>
+        <div class="wa-head">
+          {{i:back}}
+          <img id="waAvatar" alt="">
+          <div class="who"><b id="waName">SheSell Local</b><span id="waSub">Business account</span></div>
+        </div>
+        <div class="chat" id="chat" aria-live="polite"></div>
+        <div class="wa-input"><div class="box">{{i:smile}}<span data-i18n="waMessage">Message</span></div><a class="send" id="waSend" href="https://wa.me/910000000000" target="_blank" rel="noopener" aria-label="Open in WhatsApp" data-i18n-aria="openWa">{{i:send}}</a></div>
+      </div>
+    </div>
+    <p class="phone-cap" data-i18n="phoneCap">A simulation of the messages buyers get.</p>
+    <button type="button" class="btn btn-ghost phone-close" id="phoneClose">{{i:x}}<span data-i18n="close">Close</span></button>
+  </aside>
+</div>
+
+<button type="button" class="wa-fab" id="waFab">{{i:wa}}<span data-i18n="waPreview">WhatsApp preview</span></button>
+
+<div class="scrim" id="scrim" hidden></div>
+<div class="modal" id="pmodal" role="dialog" aria-modal="true" aria-labelledby="pmTitle" hidden></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" hidden>
+  <div class="drawer-head"><b class="h3 text-white" id="drawerTitle" data-i18n="cartTitle">Your basket</b><button type="button" class="icon-btn" id="drawerClose" aria-label="Close" data-i18n-aria="close">{{i:x}}</button></div>
+  <div class="drawer-body" id="drawerBody"></div>
+</aside>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+</body>
+</html>

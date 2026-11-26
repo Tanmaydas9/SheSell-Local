@@ -1,0 +1,26 @@
+# One-click deploy on Render (render.com > New > Blueprint > pick this repository).
+# The disk keeps the database and photos across restarts; disks need a paid instance.
+# On the free plan, remove the "disk" block: it still works, but data resets when the service restarts.
+services:
+  - type: web
+    name: shesell-local
+    runtime: node
+    plan: starter
+    buildCommand: npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "22.14.0"
+      - key: DATA_DIR
+        value: /var/data
+      - key: TRUST_PROXY
+        value: "1"
+      - key: TZ
+        value: Asia/Kolkata
+      - key: ADMIN_PASSWORD
+        generateValue: true
+    disk:
+      name: shesell-data
+      mountPath: /var/data
+      sizeGB: 1

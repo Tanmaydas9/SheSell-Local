@@ -1,0 +1,20 @@
+{
+  "name": "shesell-local",
+  "version": "2.0.0",
+  "description": "WhatsApp-first storefront for rural women entrepreneurs: Node.js + SQLite server, REST API, admin console and an in-browser ML storefront.",
+  "private": true,
+  "license": "MIT",
+  "main": "server/index.js",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning server/index.js",
+    "dev": "node tools/dev.js",
+    "build": "node tools/build.js",
+    "test": "node --disable-warning=ExperimentalWarning --test \"tests/*.test.js\"",
+    "reset": "node --disable-warning=ExperimentalWarning server/index.js --reset",
+    "reset-admin": "node --disable-warning=ExperimentalWarning server/index.js --reset-admin"
+  },
+  "dependencies": {}
+}

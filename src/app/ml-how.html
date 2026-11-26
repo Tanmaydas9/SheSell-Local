@@ -1,0 +1,19 @@
+<details class="mlhow">
+  <summary>{{i:cpu}}<span data-i18n="mlHowTitle">How ML works here</span>{{i:chev}}</summary>
+  <div class="mlhow-body">
+    <p class="small" data-i18n="mlHowLead">All three models run client-side, in the browser. The server never trains or runs a model.</p>
+    <ol class="mlhow-models">
+      <li><span class="mh-ic">{{i:store}}</span><span class="stack-sm"><b data-i18n="mlHow1T">Recommender · cosine similarity</b><span class="small muted" data-i18n="mlHow1">Item-to-item collaborative filtering blended with product attribute vectors, computed in the buyer’s browser on the shop page.</span></span></li>
+      <li><span class="mh-ic">{{i:chart}}</span><span class="stack-sm"><b data-i18n="mlHow2T">Fair-price MLP · TensorFlow.js</b><span class="small muted" data-i18n="mlHow2">An 8→32→16→2 network trained in the seller’s browser in Seller Studio. It predicts a fair price and weekly orders.</span></span></li>
+      <li><span class="mh-ic">{{i:camera}}</span><span class="stack-sm"><b data-i18n="mlHow3T">Photo tagger · MobileNet CNN</b><span class="small muted" data-i18n="mlHow3">A pre-trained ImageNet model that tags the product photo in AI Catalogue. The photo stays on the device until the seller publishes it.</span></span></li>
+    </ol>
+    <div class="mlhow-flow">
+      <span class="mh-node">{{i:database}}<b data-i18n="mlHowServer">Node.js + SQLite server</b></span>
+      <span class="mh-feeds">
+        <span>{{i:arrow}}<span data-i18n="mlHowFeed1">real order baskets → recommender</span></span>
+        <span>{{i:arrow}}<span data-i18n="mlHowFeed2">sales CSVs the admin imports → price MLP</span></span>
+      </span>
+    </div>
+    <p class="mlhow-chips"><span>{{i:check}}<span data-i18n="mlHowC1">Zero GPU server cost</span></span><span>{{i:shield}}<span data-i18n="mlHowC2">On-device photo privacy</span></span><span>{{i:refresh}}<span data-i18n="mlHowC3">Retrains as real data arrives</span></span></p>
+  </div>
+</details>

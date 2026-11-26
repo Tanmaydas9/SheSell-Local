@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#1B434D">
+<title>SheSell Console</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='12' fill='%239EB83B'/%3E%3Cpath d='M11.5 15h17l-2.2 15.5H13.7z' fill='%231B434D'/%3E%3Cpath d='M15.5 15c0-5.6 9-5.6 9 0' fill='none' stroke='%231B434D' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700;800&family=Noto+Serif:wght@600;700&family=Noto+Serif+Devanagari:wght@600;700&display=swap" rel="stylesheet">
+<style>{{STYLES}}</style>
+</head>
+<body>
+<main class="login" id="login" hidden></main>
+
+<div class="shell" id="shell" hidden>
+  <aside class="side" id="side">
+    <a class="brand" href="#dashboard">
+      <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="12" fill="#9EB83B"/><path d="M11.5 15h17l-2.2 15.5H13.7z" fill="#1B434D"/><path d="M15.5 15c0-5.6 9-5.6 9 0" fill="none" stroke="#1B434D" stroke-width="2.6" stroke-linecap="round"/><path d="M20 27.5c0-4.4 3.2-6.8 6.8-6.8 0 3.9-2.8 6.8-6.8 6.8z" fill="#9EB83B"/><path d="M20 27.5l3.6-3.6" stroke="#1B434D" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <span><b>SheSell</b><small>Console</small></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Console"></nav>
+    <div class="side-foot">
+      <div class="who" id="who"></div>
+      <div class="lang" role="group" aria-label="Language / भाषा"><button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="mr" lang="mr" aria-pressed="false">मराठी</button></div>
+      <div class="side-links" id="sideLinks"></div>
+    </div>
+  </aside>
+  <div class="main">
+    <header class="top">
+      <button type="button" class="icon-btn menu-btn" id="menuBtn" aria-label="Menu">{{i:menu}}</button>
+      <b class="top-title" id="topTitle"></b>
+      <span class="live-dot" id="liveDot"></span>
+    </header>
+    <section class="view" id="view" aria-live="polite"></section>
+    <div class="ws-host" id="ws" hidden></div>
+  </div>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" hidden></aside>
+<div class="dialog" id="dialog" role="alertdialog" aria-modal="true" hidden></div>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+<script>
+{{SCRIPT}}
+</script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+/* ------------------------------------------------------------------
+   Seller workspace: extra rules on top of the shop's stylesheet (which
+   the build re-targets at this shadow root). The console's own CSS
+   never reaches in here, and these rules never leak out.
+------------------------------------------------------------------- */
+:host { display: block; background: transparent; }
+.ws { padding: 0 0 48px; }
+.ws-view { gap: 20px; }
+.ws .view-head { align-items: flex-start; }
+
+/* the few layout utilities the markup uses (the shop gets these from Tailwind) */
+.mt-2\.5 { margin-top: 10px; } .mt-3 { margin-top: 12px; } .mt-3\.5 { margin-top: 14px; } .mb-1 { margin-bottom: 4px; }
+.items-center { align-items: center; } .w-auto { width: auto; } .self-start { align-self: flex-start; }
+
+/* "How ML works here" as a card of its own in Seller Studio */
+.mlhow-card { padding-top: 10px; padding-bottom: 10px; }
+.mlhow-card .mlhow { margin-top: 0; border-top: 0; padding-top: 0; }
+
+/* official WhatsApp number hint under every WhatsApp button */
+.wa-official { display: flex; align-items: center; gap: 6px; margin: 0; }
+.wa-official svg { width: 14px; height: 14px; flex: none; color: #128C4A; }
+.wa-official.placeholder { color: #7A4B07; }
+.wa-official.placeholder svg { color: #B4730C; }
+
+/* dual-output chart toggle */
+.curve-seg { margin: 2px 0 12px; }
+.curve-seg button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+.curve-seg button svg { width: 16px; height: 16px; flex: none; }
+
+/* AI Catalogue: MobileNet status + retry, listing bound to an account, MLP price */
+.cnn-box { justify-items: end; }
+@media (max-width: 760px) { .cnn-box { justify-items: start; } }
+.bind-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding: 10px 12px; margin-bottom: 14px; border-radius: 14px; background: var(--teal-50); border: 1px solid var(--teal-100); }
+.bind-row img { width: 40px; height: 40px; border-radius: 50%; background: #fff; flex: none; }
+.bind-row .stack-sm { flex: 1 1 220px; }
+.bind-row select { min-width: 240px; flex: 1 1 260px; }
+.bind-row .pill { white-space: nowrap; }
+.mlp-price { display: grid; gap: 12px; margin-top: 14px; padding: 14px; border-radius: 16px; background: var(--lime-50); border: 1px solid var(--lime-200); }
+.mlp-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 14px; }
+.mlp-head .h3 { display: inline-flex; align-items: center; gap: 8px; }
+.mlp-head .h3 svg { width: 18px; height: 18px; color: var(--lime-700); }
+#priceSrc.ok { color: var(--lime-700); font-weight: 700; }
+.mlp-price .fields { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
+@media (min-width: 900px) { .mlp-price .fields { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+/* voice lessons: practice card */
+#practiceCard .btn-wa { white-space: normal; text-align: left; }
+.pub-note { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 12px 0 0; padding: 10px 12px; border-radius: 12px; font-weight: 600; font-size: 14px; }
+.pub-note svg { width: 18px; height: 18px; flex: none; }
+.pub-note.ok { background: var(--lime-100); color: var(--teal-900); }
+.pub-note.ok svg { color: var(--lime-700); }
+.pub-note.wait { background: #FFF4DF; color: #6E4306; }
+.pub-note a { margin-left: auto; font-weight: 700; color: var(--teal-700); }

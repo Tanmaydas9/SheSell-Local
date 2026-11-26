@@ -1,0 +1,17 @@
+id,month,district,seller_type,category,item,material_cost_inr,labour_hours,packaging_tier,seasonal_demand,price_inr,weekly_orders
+S101,Oct,Pune,SHG,food,Chakli,90,1.5,standard,0.85,275,32
+S102,Nov,Satara,SHG,food,Besan ladoo,160,2,premium,0.95,435,24
+S103,Aug,Raigad,Individual,food,Mango pickle,110,1.25,standard,0.45,275,22
+S104,Mar,Pune,SHG,food,Nachni papad,60,1,basic,0.6,145,42
+S105,Oct,Pune,Individual,tailoring,Blouse stitching,140,3,standard,0.85,445,9
+S106,Jan,Ahilyanagar,SHG,tailoring,Kurti stitching,260,4,basic,0.6,580,8
+S107,May,Pune,Individual,tailoring,Saree fall & pico,35,1,basic,0.5,110,22
+S108,Nov,Pune,SHG,tailoring,Nauvari stitching,320,5,premium,0.95,875,7
+S109,Oct,Solapur,SHG,craft,Clay diyas,70,3,standard,0.85,355,8
+S110,Nov,Thane,Individual,craft,Warli painting,180,7,premium,0.95,875,5
+S111,Jul,Pune,SHG,craft,Bamboo basket,90,4,basic,0.15,350,6
+S112,Apr,Ahilyanagar,Individual,craft,Bead toran,120,3.5,standard,0.55,445,7
+S113,Dec,Pune,SHG,agri,Tomatoes 1 kg,18,0.25,basic,0.4,45,55
+S114,Jan,Solapur,Individual,agri,Pomegranates 1 kg,70,0.5,basic,0.6,150,26
+S115,Feb,Pune,SHG,agri,Jaggery 1 kg,55,0.75,standard,0.35,140,23
+S116,Jun,Pune,Individual,agri,Bananas 1 dozen,30,0.3,basic,0.2,60,48
